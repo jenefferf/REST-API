@@ -1,0 +1,178 @@
+FORMAT: 1A
+HOST: http://localhost:45000
+
+# Simulação de protocolo commit em duas fases
+ Esta Restful API foi desenvolvida com o intuito de implementar o algoritmo de eleição utilizando protocolo de commit de duas fases.
+ É importante ressaltar que esta implementação foi desenvolvida apenas para fins didáticos.
+
+# Group API
+
+## Contas  [/obterContas]
+
+### Listar contas [GET]
+
+Lista as contas que existem na armazenadas  na lista de contas
+
+{
+  "contas": [
+    {
+      "numero": "1234",
+      "saldo": "100,00"
+    },
+    {
+      "numero": "4345",
+      "saldo": "50,00"
+    }
+  ]
+}
+
++ Response 200 (application/json)
+
+## Semente [/semente]
+
+### Encaminhar semente [POST]
+Para adicionar uma semente que será utilizada no gerador de números pseudo aleatório.
+Recebe um objeto JSON contendo o valor da semente.
++ s (int) - semente
+
++ Request (application/json)
+
+        {
+            "s": 123
+
+        }
+
++ Response 201
+
+    + Headers
+
+            Location: /semente
+
+    + Body
+
+
+## Acao [/acao]
+
+### Encaminhar ação [POST]
+Encaminha ação (debito ou credito) que será feita nas contas contidas na lista de contas
+Recebe um objeto JSON contendo o id da ação, operação, número da conta e valor.
+
++ id (string) - identificador da ação
++ operacao (string) - operação a ser efetuada
++ conta (int) - número da conta
++ valor (int) - valor a ser debitado ou credito à conta
+
++ Request (application/json)
+
+        {
+            "id": "id1",
+            "operacao": "debito",
+            "conta": 123,
+            "valor": 10
+        }
+
++ Response 201
+
+    + Headers
+
+            Location: /acao
+
+    + Body
+
+### Encaminhar ação [PUT]
+Atualiza os dados que estão na lista de contas de acordo com a operação informada pelo usuário.
+Recebe um json que contendo o id da ação.
+
++ id (string) - identificador da ação
+
++ Request (application/json)
+
+        {
+                "id": "123"
+        }
++ Response 200
+
+### Encaminhar ação [DELETE]
+Deleta a operação informada pelo usuário sem fazer nenhuma alteração na lista de contas.
+Recebe um json que contendo o id da ação.
+
++ id (string) - identificador da ação
+
++ Request (application/json)
+
+        {
+                "id": "123"
+        }
++ Response 200
+
+## Replicas [/replicas]
+
+### Carregar lista de replicas [POST]
+Para adicionar os endpoints a lista de réplicas .
+Recebe um objeto JSON contendo o id e o endpoint de cada réplica.
+
++ id (string) - identificador da réplica
++ endpoint (string) - uri do endpoint
+
+
++ Request (application/json)
+
+  {"replicas": [
+          {
+              "id": "replica 1",
+              "endpoint": "http://localhost:55000"
+          },
+            {
+              "id": "replica 2",
+              "endpoint": "http://localhost:65000"
+          }
+        ]
+  }
++ Response 201
+
+    + Headers
+
+            Location: /replicas
+
+    + Body
+
+### Obter lista de replicas [GET]
+Retorna a lista de réplicas
+{
+  "replicas": [
+    {
+      "id": "replica 1",
+      "endpoint": "http://localhost:55000"
+    },
+    {
+      "id": "replica 2",
+      "endpoint": "http://localhost:65000"
+    }
+  ]
+}
++ Response 200 (application/json)
+
+### Excluir réplicas [DELETE]
+
++ Response 200 (application/json)
+
+
+## Histórico [/historico]
+
+### Obter historico [GET]
+Retorna a lista com historico de ações
+
+{
+  "acoes": [
+    {
+      "id": "19148f6d-1318-4887-b2b6-215bfc8ac35f",
+      "status": "success"
+    },
+    {
+      "id": "0fcf8b5f-622b-4923-81c4-43b1753e403f",
+      "status": "fail"
+    }
+  ]
+}
+
++ Response 200 (application/json)
